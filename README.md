@@ -1,2 +1,3 @@
-# airsim_quadrotor_env
-Reinforcement learning environment for Microsoft AirSim Unity quadrotor
+# AirSim Quadrotor Environment and DQN pytorch
+Reinforcement learning utils for AirSim Unity Quadrotor environment and DQN pytorch
+
