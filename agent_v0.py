@@ -1,5 +1,9 @@
 #!/usr/bin/env python
-# coding: utf-8
+"""Simple DQN pytorch agent for Airsim Quadrotor
+
+- Author: Subin Yang
+- Contact: subinlab.yang@gmail.com
+"""
 import gym
 from gym import wrappers
 import random
@@ -19,7 +23,6 @@ from env import DroneEnv
 env = DroneEnv()
 
 
-# hyper parameters
 EPISODES = 50  # number of episodes
 EPS_START = 0.9  # e-greedy threshold start value
 EPS_END = 0.05  # e-greedy threshold end value
@@ -42,23 +45,13 @@ class DQNAgent:
     
     def act(self, state):
         eps_threshold = EPS_END + (EPS_START - EPS_END) * math.exp(-1. * self.steps_done / EPS_DECAY)
-        print("eps_threshold: ", eps_threshold)
         self.steps_done += 1
         if random.random() > eps_threshold:
-            print("case1 exploitation")
-            #loss = orig_loss.max().detach().numpy()
-            #print(self.model(state).data.max(1)[1])
             action = self.model(state).data.max(1)[1]
             action = [action.max(1)[1]]
-            print("action: ", action)
-            #action = self.model(state).data.max(1)[1].view(-1, 1)[1]
-            #print(type(action))
-            #print(action)
             return torch.LongTensor([action])
         else:
-            print("case2 exploration")
             action = [random.randrange(0, 7)]
-            print("action: ", action)
             return torch.LongTensor([action])
 
     def memorize(self, state, action, reward, next_state):
@@ -73,13 +66,11 @@ class DQNAgent:
             return
         batch = random.sample(self.memory, BATCH_SIZE)
         states, actions, rewards, next_states = zip(*batch)
-        print(actions)
         states = torch.cat(states)
         actions = torch.cat(actions)
         rewards = torch.cat(rewards)
         next_states = torch.cat(next_states)
-        print(actions)
-        #current_q = self.model(states).gather(1, actions.unsqueeze((1)))
+
         current_q = self.model(states)
         max_next_q = self.model(next_states).detach().max(1)[0]
         expected_q = rewards + (GAMMA * max_next_q)
@@ -99,15 +90,9 @@ for e in range(1, EPISODES+1):
     state = env.reset()
     steps = 0
     while True:
-        #env.render()
         state = torch.FloatTensor([state])
         action = agent.act(state)
-        print(action)
         next_state, reward, done = env.step(action)
-
-        # negative reward when attempt ends
-        #if done:
-        #    reward = -1
 
         agent.memorize(state, action, reward, next_state)
         agent.learn()

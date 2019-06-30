@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-"""Environment for Microsoft AirSim Unity Quadrotor
+"""Environment for Microsoft AirSim Unity Quadrotor using AirSim python API
 
 - Author: Subin Yang
 - Contact: subinlab.yang@gmail.com
@@ -17,7 +17,7 @@ import setup_path
 
 
 class DroneEnv(object):
-    """Drone environment class using AirSim API"""
+    """Drone environment class using AirSim python API"""
 
     def __init__(self):
         self.client = airsim.MultirotorClient()
@@ -134,7 +134,7 @@ class DroneEnv(object):
         return dist
 
     def compute_reward(self, quad_state, quad_vel, collision_info):
-        """Compute rewared"""
+        """Compute reward"""
         thresh_dist = 7
         max_dist = 500
         beta = 1
