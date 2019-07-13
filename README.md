@@ -13,7 +13,7 @@ Reinforcement learning for AirSim Unity Quadrotor environment and DQN pytorch
 
 
 
-<h2>Environment</h2>
+<h2>Environment (Setup)</h2>
 
 - [Microsoft Airsim on Unity](<https://github.com/microsoft/AirSim/tree/master/Unity>)
 - [Unity-2018.2.7f1 (Linux version)](<https://github.com/microsoft/AirSim/tree/master/Unity#download-and-install-unity-for-linux>)
